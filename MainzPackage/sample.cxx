@@ -1,0 +1,6 @@
+#ifndef MAINZ_DEEP_MAINZPACKAGE_SAMPLE_CXX
+#define MAINZ_DEEP_MAINZPACKAGE_SAMPLE_CXX
+
+#include "sample.h"
+
+#endif
