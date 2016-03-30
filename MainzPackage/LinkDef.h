@@ -9,6 +9,15 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
-#pragma link C++ class sample+;
+#pragma link C++ class TqspinSpectrometer+;
+#pragma link C++ class CK_RungeKutta+;
+#pragma link C++ class Tqspin+;
+#pragma link C++ class Dipol+;
+#pragma link C++ class TCalcDeep+;
 //ADD_NEW_CLASS ... do not change this line
 #endif
+
+
+
+
+
