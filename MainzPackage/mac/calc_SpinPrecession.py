@@ -28,16 +28,16 @@ if DoMCEEPtreeCalculation:
 
 if DoSingeEventCalculation:
     qspin = Tqspin()
-    dp = 10
+    dp = 0
     th = 0.1
-    ph = 0.1
+    ph = 0
     y0 = 0
     p_ref = 523
     # E = 854.2 MeV electron
     # electron at -54.4 deg., momentum 619 MeV
     S_tg = ROOT.TVector3( 0.5 , 0.0 , 0.5 )
     S_HDC = qspin.pSpinPrecessionSpecA( dp , th , ph , y0 , p_ref, S_tg.X() , S_tg.Y() , S_tg.Z() )
-    # input: <dp/%c> <th/mrad> <y0/mm> <ph/mrad> <p_ref/MeV/c> <Sx_tg> <Sy_tg> <Sz_tg>
+    # input: <dp/%c> <th_tg/mrad> <y0_tg/mm> <ph_tg/mrad> <p_ref/MeV/c> <Sx_tg> <Sy_tg> <Sz_tg>
     print "calculated single event precession with p_ref=%.1f MeV/c, dp = %.1f%%, ph = %.2f mrad, th = %.2f mrad, y0 = %.1fmm"%(p_ref,dp,ph,th,y0)
     S_tg.Print()
     S_HDC.Print()
