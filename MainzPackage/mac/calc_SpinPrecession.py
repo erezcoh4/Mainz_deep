@@ -28,13 +28,17 @@ if DoMCEEPtreeCalculation:
 
 if DoSingeEventCalculation:
     qspin = Tqspin()
+    Q2 = 0.445
+    Xv = 1.006
     dp = 0
-    th = 0.1
+    th = 45.5 * 3.14 / 180;
     ph = 0
     y0 = 0
     p_ref = 523
     # E = 854.2 MeV electron
     # electron at -54.4 deg., momentum 619 MeV
+    # proton at 51.4 deg., momentum 523 MeV
+    # proton at 45.5 deg., momentum 705 MeV
     S_tg = ROOT.TVector3( 0.5 , 0.0 , 0.5 )
     S_HDC = qspin.pSpinPrecessionSpecA( dp , th , ph , y0 , p_ref, S_tg.X() , S_tg.Y() , S_tg.Z() )
     # input: <dp/%c> <th_tg/mrad> <y0_tg/mm> <ph_tg/mrad> <p_ref/MeV/c> <Sx_tg> <Sy_tg> <Sz_tg>
