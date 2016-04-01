@@ -94,7 +94,7 @@ void TCalcDeep::ComputePhysVars(int entry){
     dp = 100.*(p.P() / p_ref - 1.);
     
     // <dp/%c> <th/mrad> <y0/mm> <ph/mrad> <p_ref/MeV/c> <Sx_tg> <Sy_tg> <Sz_tg>
-    S_HDC = qspin.pSpinPrecessionSpecA( dp , Th_p_i  , 0 , Ph_p_i , p_ref , S_tg.X() , S_tg.Y() , S_tg.Z());
+    S_HDC = qspin.pSpinPrecessionSpecA( dp , Th_p_i  , 0 , Ph_p_i , p_ref , S_tg );
     
     OutTree -> Fill();
 

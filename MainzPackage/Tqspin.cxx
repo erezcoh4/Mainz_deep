@@ -51,11 +51,10 @@ void magmove(double t,
     
     // ++++++++++ ODEs: Ordinary Differential Equations to integrate
     // (K_p = e/(M_p*gamma)):
-    Vector3D Velocity( y[4] , y[5] , y[6] );
-    double betaParticle  = Velocity.abs() / SpeedOfLight ;
+    TVector3 Velocity( y[4] , y[5] , y[6] );
+    double betaParticle  = Velocity.Unit() / SpeedOfLight ;
     double gammaParticle = 1./sqrt( 1. - betaParticle*betaParticle );
     double K_p = 0.09578831/gammaParticle;           // [K_p] = 1/(Tesla*nsec)
-    //    printf("in MagMove beta = %f, gamma = %f , K_p = %f\n",betaParticle,gammaParticle,K_p);
     dr = v;
     dv = K_p * ( v && B );
     ds = K_p * ( s && (g_p/2 * B_L + (1+gammaParticle*(g_p-2)/2) * B_T) );
@@ -65,16 +64,6 @@ void magmove(double t,
     dydx[4]=dv[1]; dydx[5]=dv[2]; dydx[6]=dv[3];
     dydx[7]=ds[1]; dydx[8]=ds[2]; dydx[9]=ds[3];
     
-//    delete r;
-//    delete v;
-//    delete s;
-//    delete dr;
-//    delete dv;
-//    delete ds;
-//    delete B;          // Magnetic Field
-//    delete E_v;        // Vector in v-direction with length 1
-//    delete B_L;
-//    delete B_T;   // Fields longitudinal and transversal to v
     return;
 }
 
@@ -105,14 +94,10 @@ Tqspin::Tqspin(){
 
 
 
+TVector3 Tqspin::pSpinPrecessionSpecA(float fdp , float fth , float fph , float fy0 , float fp_ref, TVector3 fS){
+    // <dp/%c> <th/mrad> <y0/mm> <ph/mrad> <p_ref/MeV/c> <S_tg>
 
-
-TVector3 Tqspin::pSpinPrecessionSpecA(float fdp , float fth , float fph , float fy0 , float fp_ref, float fSx , float fSy , float fSz){
-    // <dp/%c> <th/mrad> <y0/mm> <ph/mrad> <p_ref/MeV/c> <Sx_tg> <Sy_tg> <Sz_tg>
-    
-    // Vector containing start values for y:
     double *ystart = new double[odenum+1];
-    
     double dp_val[5] = {-5.7794, 0.0327, 5.6206, 11.0182, 16.2521};
     
     // Loop for multitrack (is left after first track for single track calc):
@@ -129,32 +114,24 @@ TVector3 Tqspin::pSpinPrecessionSpecA(float fdp , float fth , float fph , float 
                         ph = fph;    // ph_tg in mrad
                         y0 = fy0;    // y0_tg in mm
                         p_ref = fp_ref; // MeV/c
-                        cmd_Sx = fSx;
-                        cmd_Sy = fSy;
-                        cmd_Sz = fSz;
-                        
-                        Vector3D Spin_tg(cmd_Sx,cmd_Sy,cmd_Sz);
+                    
+                        Vector3D Spin_tg(fS.X(),fS.Y(),fS.Z());
                         p = (1.0 + dp/100)*p_ref; // MeV/c
                         
                         spec->scaleField(p_ref);
                         
                         // calc start position and velocity:
-                        Vector3D Position(0, y0, 0); // im mm !
+                        TVector3 Position(0, y0, 0); // im mm !
                         Vector3D Velocity(tan(th/1000.0), tan(ph/1000.0), 1.0); // Richtung
                         Velocity = Velocity/Velocity.abs(); // Normierung des Betrags auf 1.0
                         gammaParticle = sqrt(p*p+M_p*M_p)/M_p;
                         betaParticle = sqrt(1.0 - 1.0/(gammaParticle*gammaParticle));
                         Velocity = Velocity * SpeedOfLight * betaParticle;
-                        
-                        // store Start_Velocity:
-                        Vector3D Start_Velocity(tan(th/1000.0), tan(ph/1000.0), 1.0); // Richtung
-                        // Normierung des Betrags auf 1.0
-                        Start_Velocity = Start_Velocity/Start_Velocity.abs();
-                        
+
                         // Vector containing start values for y:
-                        ystart[1] = Position[1]; // x-Coordinate in mm
-                        ystart[2] = Position[2]; // y-Coordinate in mm
-                        ystart[3] = Position[3]; // z-Coordinate in mm
+                        ystart[1] = Position.X(); // x-Coordinate in mm
+                        ystart[2] = Position.Y(); // y-Coordinate in mm
+                        ystart[3] = Position.Z(); // z-Coordinate in mm
                         ystart[4] = Velocity[1]; // x-Velocity in mm/nsec
                         ystart[5] = Velocity[2]; // y-Velocity in mm/nsec
                         ystart[6] = Velocity[3]; // z-Velocity in mm/nsec
@@ -188,9 +165,7 @@ TVector3 Tqspin::pSpinPrecessionSpecA(float fdp , float fth , float fph , float 
                                   &acttime); // actual value for the independent variable
                         
                         // --- Get END position, velocity and spin: out of ystart
-                        Position[1] = ystart[1];
-                        Position[2] = ystart[2];
-                        Position[3] = ystart[3];
+                        Position.SetXYZ(ystart[1] , ystart[2] , ystart[3]);
                         Velocity[1] = ystart[4];
                         Velocity[2] = ystart[5];
                         Velocity[3] = ystart[6];
@@ -204,21 +179,13 @@ TVector3 Tqspin::pSpinPrecessionSpecA(float fdp , float fth , float fph , float 
                         Vector3D Ey_hdc = Ez_hdc && Ex_hdc;
                         Vector3D DAxis_to_HDC;
                         double Dangle_to_HDC;
-                        Vector3D SEAR_H = rotVec(Spin_end, Velocity, Ez_hdc,
-                                                 DAxis_to_HDC, Dangle_to_HDC);
+                        Vector3D SEAR_H = rotVec(Spin_end, Velocity, Ez_hdc, DAxis_to_HDC, Dangle_to_HDC);
                         Vector3D Spin_end_particle(SEAR_H*Ex_hdc, SEAR_H*Ey_hdc, SEAR_H*Ez_hdc);
 
                         
                         return TVector3(Spin_end_particle[1],Spin_end_particle[2],Spin_end_particle[3]);
-                      //                        printf("START SPIN:\n \\(S{_x}, S{_y}, S{_z}\\){_ACS}\n");
-                        //                        printf("( %6.2f, %6.2f, %6.2f )\n", Spin_tg[1],Spin_tg[2],Spin_tg[3]);
-                        //                        printf("\nEND SPIN:\n \\(S{_x}, S{_y}, S{_z}\\){_particle}\n");
-                        //                        printf("( %6.2f, %6.2f, %6.2f )\n",Spin_end_particle[1],Spin_end_particle[2],Spin_end_particle[3]);
-                        // close some files:
-                        
                     }
     }
-    
     
     // close some files:
     return TVector3();

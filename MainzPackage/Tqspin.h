@@ -2,15 +2,15 @@
  * \file Tqspin.h
  *
  * \ingroup MainzPackage
- * 
+ *
  * \brief Class def header for a class Tqspin
  *
  * @author erezcohen
  */
 
 /** \addtogroup MainzPackage
-
-    @{*/
+ 
+ @{*/
 #ifndef TQSPIN_H
 #define TQSPIN_H
 
@@ -32,12 +32,12 @@ using namespace std;
 
 
 /**
-   \class Tqspin
-   User defined class Tqspin ... these comments are used to generate
-   doxygen documentation!
+ \class Tqspin
+ User defined class Tqspin ... these comments are used to generate
+ doxygen documentation!
  */
 class Tqspin{
-
+    
 public:
     
     
@@ -46,21 +46,21 @@ public:
     
     TqspinSpectrometer *spec = new qspinSpecA();
     
- 
+    
     // some nasty global (!!) variables:
     double gammaParticle;
     double K_p;
     int multitrack = 0;   // Flag, assume we want to calc only one track
     static const int odenum = 9;    // Number of ODEs (dimension of the arrays)
     CK_RungeKutta rk;
-
-
+    
+    
     // ---------------------------- StoreStep ------------------------------------
     FILE   *storefile=NULL;  // filehandle of open file for step storage
     FILE   *storefile2=NULL; // filehandle for storage of magnetic field strength
     Vector3D r_old;
     double act_length;
-
+    
     
     Vector3D O_D_vdc_x1; // unsicher !! (un certain)
     double phi_bend_ref , tma_x , tma_theta , tma_y , tma_phi , alpha;
@@ -75,20 +75,23 @@ public:
     double betaParticle;
     
     
-  /// Default constructor
+    
+    TVector3    Position , Velocity;
+    Float_t     pGamma , pBeta;
+    /// Default constructor
     Tqspin();
-
-  /// Default destructor
-  ~Tqspin(){}
+    
+    /// Default destructor
+    ~Tqspin(){}
     
     
     
     
     // methods from qspin.cc
-    TVector3 pSpinPrecessionSpecA (float  , float  , float  , float  , float , float  , float  , float );
-
+    TVector3 pSpinPrecessionSpecA (float, float, float, float, float, TVector3 );
+    
 };
 
 #endif
-/** @} */ // end of doxygen group 
+/** @} */ // end of doxygen group
 

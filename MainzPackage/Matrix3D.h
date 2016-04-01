@@ -23,6 +23,7 @@
 #endif
 #include <iosfwd>
 #include <cmath>
+#include "TVector3.h"
 
 const double deg = 3.141592653589793238 / 180.0;
 
@@ -198,9 +199,11 @@ std::ostream& operator<<(std::ostream& s, Matrix3D O);      // Ausgeben einer Ma
    */
 Vector3D
 rotVec( Vector3D V0, // Vector der gedreht wird
-	Vector3D V1, // Startrichtung
-	Vector3D V2, // Zielrichtung
-	Vector3D &D, // Drehachse
-	double &phi);// Drehwinkel
+       Vector3D V1, // Startrichtung
+       Vector3D V2, // Zielrichtung
+       Vector3D &D, // Drehachse
+       double &phi);// Drehwinkel
+
+TVector3 rotVec( TVector3 V0,  TVector3 V1,  TVector3 V2,  TVector3 &D, double &phi);// Drehwinkel
 
 #endif

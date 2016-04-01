@@ -17,28 +17,9 @@
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
-
 #include "Matrix3D.h"
 #include "Magnets.h"
 #include <cstring>
-
-/**
- \class TqspinSpectrometer
- User defined class TqspinSpectrometer ... these comments are used to generate
- doxygen documentation!
- */
-//class TqspinSpectrometer{
-//
-//public:
-//
-//  /// Default constructor
-//  TqspinSpectrometer(){}
-//
-//  /// Default destructor
-//  ~TqspinSpectrometer(){}
-//
-//};
-
 
 
 class TqspinSpectrometer {
@@ -71,7 +52,7 @@ protected:
     
 public:
     qspinSpecA(const char *basename="qspin");
-     ~qspinSpecA() { // virtual
+    ~qspinSpecA() { // virtual
         delete Quad;
         delete Sext;
         delete D1;

@@ -36,6 +36,20 @@ std::ostream& operator<<(std::ostream& s, Matrix3D O){
    Rueckgabewert der Funktion ist der gedrehte Vektor, ausserdem werden
    der Drehwinkel phi und die normierte Drehachse D zurueckgegeben
    */
+
+
+TVector3 rotVec( TVector3 V0, TVector3 V1, TVector3 V2, TVector3 &D, double &phi) {
+    Vector3D fV0(V0.X(),V0.Y(),V0.Z());
+    Vector3D fV1(V1.X(),V1.Y(),V1.Z());
+    Vector3D fV2(V2.X(),V2.Y(),V2.Z());
+    Vector3D fD(V2.X(),V2.Y(),V2.Z());
+    double fphi;
+    Vector3D resVector3D = rotVec( fV0,  fV1, fV2, fD, fphi);
+    return TVector3(resVector3D[0],resVector3D[1],resVector3D[2]);
+}
+
+
+
 Vector3D
 rotVec( Vector3D V0, // Vector der gedreht wird
 	Vector3D V1, // Startrichtung
