@@ -27,29 +27,20 @@ if DoMCEEPtreeCalculation:
 
 
 if DoSingeEventCalculation:
-    #   E0[GeV]	Q2[GeV2]    E'[GeV]	ThetaE0[Deg]	Pp[GeV/c]	ThetaP[Deg]	Theta[Rad]	Sin^2(Theta)    Mott[uBarn]	Xsec[uBarn]	Ge          Gm      I0      Px      Pz      Px/Pz	Ge/Gm
-    
-    #   0.855	0.4         0.641	50.5            0.667       47.91       0.882       0.182           0.131       0.349       0.409       1.142   0.389	-0.403	0.424	-0.950	0.358
-
-    #   0.855	0.45        0.615	55.1            0.712       45.1        0.961       0.214           0.087       0.324       0.374       1.046   0.366	-0.424	0.484	-0.875	0.358
-
-    #   0.855	0.5         0.588	59.8            0.755       42.3        1.043       0.248           0.059       0.305       0.344       0.962   0.349	-0.439	0.542	-0.809	0.358
-
-    #   0.855	0.55        0.562	64.6            0.797       39.5        1.129       0.286           0.040       0.292       0.317       0.886   0.337	-0.448	0.599	-0.748	0.358
     qspin = Tqspin()
-    Q2 = 0.5
-    dp = 0
-    th = 1043
-    ph = 0
-    y0 = 0
-    p_ref = 755 
-    S_tg_dipole = ROOT.TVector3( -0.439 , 0.0 , 0.542 )
+    th  = 0 # target coordinate
+    ph  = 0 # target coordinate
+    y0  = 0
+    p   = 667
+    p_ref = 630
+    dp = 100*((p - p_ref)/p_ref)
+    S_tg_dipole = ROOT.TVector3( -40.3 , 0 , 42.4 )
     S_tg = S_tg_dipole
     S_HDC = qspin.pSpinPrecessionSpecA( dp , th , ph , y0 , p_ref, S_tg )
-    # input: <dp/%c> <th_tg/mrad> <y0_tg/mm> <ph_tg/mrad> <p_ref/MeV/c> <Sx_tg> <Sy_tg> <Sz_tg>
-    print "calculated single event precession with p_ref=%.1f MeV/c, dp = %.1f%%, ph = %.2f mrad, th = %.2f mrad, y0 = %.1fmm"%(p_ref,dp,ph,th,y0)
-    S_tg.Print()
-    S_HDC.Print()
+    # input: <dp/%c> <th_tg/mrad> <y0_tg/mm> <ph_tg/mrad> <p_ref/MeV/c> <S_tg/%>
+    print "p_ref=%.0f MeV/c, dp = %.1f%%, ph = %.1f mrad, th = %.1f mrad, y0 = %.1f mm"%(p_ref,dp,ph,th,y0)
+    print "polarization at target (%.3f,%.3f,%.3f)"%(S_tg.X()/100,S_tg.Y()/100,S_tg.Z()/100)
+    print "polarization at HDC (%.3f,%.3f,%.3f)"%(S_HDC.X()/100,S_HDC.Y()/100,S_HDC.Z()/100)
 
 
 

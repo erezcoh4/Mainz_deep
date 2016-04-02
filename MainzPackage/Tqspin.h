@@ -73,11 +73,15 @@ public:
     int nok, nbad, nstored;
     double acttime , starttime , endtime;
     double betaParticle;
+    double dp_val[5];
     
     
-    
-    TVector3    Position , Velocity;
+    TVector3    Position , Velocity , Spin_end ;
     Float_t     pGamma , pBeta;
+    double      Dangle_to_HDC;
+    double      winkel_hdc;
+    Vector3D    Ez_hdc , Ex_hdc , Ey_hdc , SEAR_H;
+
     /// Default constructor
     Tqspin();
     
