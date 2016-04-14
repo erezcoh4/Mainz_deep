@@ -34,7 +34,7 @@ const double m_proton   = 0.938272046   ;
 const double m_neutron  = 0.93956563    ;
 const double m_deuteron = 1.87561339    ;
 const double m_e        = 0.510998928e-3;
-const double m_C12	= 11.174866     ;
+const double m_C12      = 11.174866     ;
 const double PI         = 3.14159265    ;
 
 //Bernauer FF
@@ -517,10 +517,13 @@ void compModels(TString xPar = "virtF(Pm)"){
 
     //{"PWBA (NR)", "DWIA (NR)", "PWBA (RC)", "DWIA+MEC (NR)", "DWIA+MEC+IC (NR)", "DWIA (RC)", "DWIA+MEC+IC (RC)"};
     std::vector<TString> models;
-    models.push_back("PWBA (RC)"); // 3
-    models.push_back("DWIA+MEC+IC (NR)"); // 5
-    models.push_back("DWIA (RC)"); // 6
-    models.push_back("DWIA+MEC+IC (RC)"); // 7
+    models.push_back("PWBA (NR)");
+    models.push_back("DWIA (NR)");
+    models.push_back("PWBA (RC)");
+    models.push_back("DWIA+MEC (NR)");
+    models.push_back("DWIA+MEC+IC (NR)");
+    models.push_back("DWIA (RC)");
+    models.push_back("DWIA+MEC+IC (RC)");
 
     TFile * OutFile = new TFile("/home/erez/VirtualityModels.root","recreate");
     TCanvas * canvas = new TCanvas("models","models");
@@ -551,28 +554,7 @@ void compModels(TString xPar = "virtF(Pm)"){
         h2 -> Write();
 
     }
-    // horizontal line at y = 1
-    TLine * line = new TLine(-.13,1,0.062,1);
-    line -> SetLineStyle( 2 );
-    line -> SetLineColor( 1 );
-    line -> SetLineWidth( 2 );
-    line -> Draw();
     
-    // add centeral axis
-    TGaxis *CentralAxis = new TGaxis(0,0.57,0,1.3,"");
-    CentralAxis -> SetName("CentralAxis");
-    CentralAxis -> SetLabelSize(0.03);
-    CentralAxis -> SetTextFont(72);
-    CentralAxis -> SetLabelOffset(0.025);
-    CentralAxis -> Draw();
-    
-    
-    // add Pmiss texts
-    TText * TLeft   = new TText(-0.06,0.6,"P_{miss} < 0");
-    TLeft->Draw();
-    TText * TRight  = new TText( 0.02,0.6,"P_{miss} > 0");
-    TRight->Draw();
-
     hs -> Draw("hist l nostack");
     gPad -> BuildLegend();
     gPad -> SetTicks(1,1);
